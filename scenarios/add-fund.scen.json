@@ -1,0 +1,48 @@
+{
+    "name": "Add funds test",
+    "steps": [
+        {
+            "step": "externalSteps",
+            "path": "init.scen.json"
+        },
+        {
+            "step": "scCall",
+            "txId": "add fund",
+            "tx": {
+                "from": "address:owner",
+                "to": "sc:nft-stake-contract",
+                "egldValue": "1,000,000,000",
+                "function": "add_rewards",
+                "arguments": [],
+                "gasLimit": "100,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "2",
+                    "balance": "9,000,000,000",
+                    "storage": {}
+                },
+                "sc:nft-stake-contract": {
+                    "nonce": "0",
+                    "balance": "1,000,000,000",
+                    "storage": {
+                        "str:nft_value": "100,000",
+                        "str:collection_nft_identifier": "str:NFTTEST-40caee",
+                        "str:fundingCap": "1,000,000,000"
+                    },
+                    "code": "file:../output/nft-stake-contract.wasm"
+                }
+            }
+        }
+    ]
+}

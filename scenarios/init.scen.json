@@ -1,0 +1,60 @@
+{
+    "name": "Init test",
+    "steps": [
+        {
+            "step": "setState",
+            "accounts": {
+                "address:owner": {
+                    "nonce": "0",
+                    "balance": "10,000,000,000"
+                }
+            },
+            "newAddresses": [
+                {
+                    "creatorAddress": "address:owner",
+                    "creatorNonce": "0",
+                    "newAddress": "sc:nft-stake-contract"
+                }
+            ]
+        },
+        {
+            "step": "scDeploy",
+            "id": "deploy",
+            "tx": {
+                "from": "address:owner",
+                "contractCode": "file:../output/nft-stake-contract.wasm",
+                "arguments": [
+                    "100,000",
+                    "str:NFTTEST-40caee"
+                ],
+                "gasLimit": "5,000,000",
+                "gasPrice": "0"
+            },
+            "expect": {
+                "out": [],
+                "status": "0",
+                "gas": "*",
+                "refund": "*"
+            }
+        },
+        {
+            "step": "checkState",
+            "accounts": {
+              "address:owner": {
+                "nonce": "1",
+                "balance": "10,000,000,000",
+                "storage": {}
+              },
+              "sc:nft-stake-contract": {
+                "nonce": "0",
+                "balance": "0",
+                "storage": {
+                  "str:nft_value": "100,000",
+                  "str:collection_nft_identifier": "str:NFTTEST-40caee"
+                },
+                "code": "file:../output/nft-stake-contract.wasm"
+              }
+            }
+          }
+    ]
+}

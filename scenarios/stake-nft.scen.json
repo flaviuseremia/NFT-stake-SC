@@ -1,0 +1,91 @@
+{
+    "name": "Stake 1 nft test. str:nft_stake_infoaccount1 = long hex from storage(left)",
+    "steps": [
+      {
+        "step": "externalSteps",
+        "path": "add-fund.scen.json"
+      },
+      {
+        "step": "setState",
+        "accounts": {
+          "address:account1": {
+            "nonce": "0",
+            "balance": "1,000,000,000",
+            "esdt": {
+              "str:NFTTEST-40caee": {
+                "instances": [
+                  {
+                    "nonce": "1",
+                    "balance": "1"
+                  }
+                ]
+              }
+            }
+          }      
+        }
+      },
+      {
+        "step": "scCall",
+        "txId": "stake nft",
+        "tx": {
+          "from": "address:account1",
+          "to": "sc:nft-stake-contract",
+          "egldValue": "0",
+          "esdtValue": [
+            {
+              "tokenIdentifier": "str:NFTTEST-40caee",
+              "nonce":"1",
+              "value": "1"
+            }
+        ],
+          "function": "stake_nft",
+          "arguments": [],
+          
+          "gasLimit": "100,000,000",
+          "gasPrice": "0"
+        },
+        "expect": {
+          "out": [],
+          "status": "",
+          "gas": "*",
+          "refund": "*"
+        }
+      },
+      {
+        "step": "checkState",
+        "accounts": {
+            "address:owner": {
+                "nonce": "2",
+                "balance": "9,000,000,000",
+                "storage": {}
+            },
+          "address:account1": {
+            "nonce": "1",
+            "balance": "1,000,000,000"
+          },
+          "sc:nft-stake-contract": {
+            "nonce": "0",
+            "balance": "1,000,000,000",
+            "esdt": {
+              "str:NFTTEST-40caee":{
+                "instances": [
+                  {
+                    "nonce": "1",
+                    "balance": "1"
+                  }
+                ]
+              }
+            },
+            "storage": {
+                "str:nft_value": "100,000",
+                "str:collection_nft_identifier": "str:NFTTEST-40caee",
+                "str:fundingCap": "1,000,000,000",
+                "0x6e66745f7374616b655f696e666f6163636f756e74315f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f":"0x00000000000000000000000000000000000000020000000000000001000000000000000100000000"
+            },
+            "code": "file:../output/nft-stake-contract.wasm"
+          }
+        }
+      }
+    ]
+  }
+  
