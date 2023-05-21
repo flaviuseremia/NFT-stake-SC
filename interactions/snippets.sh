@@ -6,14 +6,14 @@ WASM_PATH="/home/flaerd/Flavius/licenta/MultiversX/nft-stake-contract/output/nft
 
 USER_ADDRESS=erd15y7qz4j0czthe3cv35zq6kejssz0n8xw3j3etan5hr9jt6lea0wsnr2plm
 
-# last sc addr  erd1qqqqqqqqqqqqqpgq0pkumrkgc67ms0tr5huwf0uuvyfzhhdsa0wsu0043g
-SC_ADDRESS=erd1qqqqqqqqqqqqqpgqsn4q75yt0lf4822k0plldnxjet49vkpua0ws6un5tz
+# last sc addr erd1qqqqqqqqqqqqqpgqsn4q75yt0lf4822k0plldnxjet49vkpua0ws6un5tz 
+SC_ADDRESS=erd1qqqqqqqqqqqqqpgqn5u5pjk6jredwe2yhu8as4h3pxfqmzyha0wsclcnan
 STAKE_AMOUNT=50000000000000000 # => 0.05XEGLD
 UNSTAKE_AMOUNT=50000000000000000 # => 0.05XEGLD
 SC_FUNDING_CAP=500000000000000000 # => 0.5 XEGLD
 NFT_VALUE=500000000000000000 # => 0.50XEGLD
 NFT_TOKEN_IDENTIFIER=str:NFTTEST-40caee # NFTTEST-40caee
-NFT_NOUNCE=01
+NFT_NOUNCE=02
 
 USER_WALLET="$(mxpy wallet pem-address $USER_PEM)"
 

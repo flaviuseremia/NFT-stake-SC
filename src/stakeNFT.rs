@@ -31,7 +31,6 @@ pub trait NftStakeContract {
         let added_amount = self.call_value().egld_value();
         require!(added_amount > 0, "Must pay more than 0");
 
-        //self.funding_cap().set(added_amount);
         self.funding_cap().update(|funding_cap| {
             *funding_cap += added_amount;
         });
@@ -42,7 +41,7 @@ pub trait NftStakeContract {
     fn stake_nft(&self) {
         let nfts = self.call_value().all_esdt_transfers();
         let _sc_caller = self.blockchain().get_caller();
-        let _current_block = self.blockchain().get_block_epoch();
+        let _current_block = self.blockchain().get_block_nonce();
         let _stake_mapper = self.nft_stake_info(&_sc_caller);
         let mut nonce_vector: Vec<u64> = Vec::new();
 
@@ -70,18 +69,11 @@ pub trait NftStakeContract {
 
         self.claim_rewards_for_user(&_sc_caller, &mut staking_pos);
 
-        self.nft_stake_info(&_sc_caller).update(|staking_pos| {
-            for nonce in staking_pos.nft_nonces.clone() {
-                nonce_vector.push(nonce);
-            }
-            staking_pos.nft_nonces = nonce_vector;
-        });
-
-        // Add the old nounces to the new ones
-        // for nonce in staking_pos.nft_nonces {
-        //     &nonce_vector.push(nonce);
-        // }
-        // staking_pos.nft_nonces = nonce_vector;
+        //Add the old nounces to the new ones
+        for nonce in staking_pos.nft_nonces {
+            &nonce_vector.push(nonce);
+        }
+        staking_pos.nft_nonces = nonce_vector;
         _stake_mapper.set(&staking_pos);
     }
 
@@ -94,16 +86,12 @@ pub trait NftStakeContract {
         let mut _staking_pos = self.nft_stake_info(&_sc_caller).get();
         let _nft_identifier = self.collection_nft_identifier().get();
         let _amount = BigUint::from(1u64);
-        let _nft1 = 1u64;
-        let _nft2 = 2u64;
 
-        //self.claim_rewards_for_user(&_sc_caller, &mut _staking_pos);
+        self.claim_rewards_for_user(&_sc_caller, &mut _staking_pos);
 
-        // for nft_nonce in _staking_pos.nft_nonces {
-        //     self.send().direct(&_sc_caller, &_nft_identifier, nft_nonce, &_amount);
-        // }
-        self.send().direct(&_sc_caller, &_nft_identifier, _nft1, &_amount);
-        self.send().direct(&_sc_caller, &_nft_identifier, _nft2, &_amount);
+        for nft_nonce in _staking_pos.nft_nonces {
+            self.send().direct(&_sc_caller, &_nft_identifier, nft_nonce, &_amount);
+        }
 
         self.nft_stake_info(&_sc_caller).clear();
     }
